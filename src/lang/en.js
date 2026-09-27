@@ -24,10 +24,12 @@ export default {
     profile: 'Profile',
     github: 'Github',
     doc: 'Docs',
-    logout: 'Log Out'
+    logout: 'Log Out',
+    themeLight: 'Switch to light mode',
+    themeDark: 'Switch to dark mode'
   },
   login: {
-    title: 'X Panel',
+    title: 'XWarp',
     logIn: 'Login',
     username: 'Username',
     password: 'Password',

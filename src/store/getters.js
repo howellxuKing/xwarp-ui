@@ -1,4 +1,5 @@
 const getters = {
+  theme: (state) => state.theme.theme,
   sidebar: (state) => state.app.sidebar,
   language: (state) => state.app.language,
   size: (state) => state.app.size,

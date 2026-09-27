@@ -24,10 +24,12 @@ export default {
     profile: '个人中心',
     github: '项目地址',
     doc: '项目文档',
-    logout: '退出登录'
+    logout: '退出登录',
+    themeLight: '切到白天模式',
+    themeDark: '切到黑夜模式'
   },
   login: {
-    title: 'X Panel',
+    title: 'XWarp',
     logIn: '登录',
     username: '账号',
     password: '密码',

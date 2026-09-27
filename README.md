@@ -1,18 +1,18 @@
 <div align="center">
-<img src="https://raw.githubusercontent.com/howellxuKing/x-panel-ui/main/public/logo.png" width="120" alt="X Panel" />
-<h1>X Panel UI</h1>
-<p>X Panel 前端管理界面（Vue + Element UI）</p>
+<img src="https://raw.githubusercontent.com/howellxuKing/x-panel-ui/main/public/logo.png" width="120" alt="XWarp" />
+<h1>XWarp UI</h1>
+<p>XWarp 前端管理界面（Vue + Element UI）</p>
 </div>
 
 ## 简介
 
-X Panel 的 Web 管理界面（基于 [Trojan Panel UI](https://github.com/trojanpanel/trojan-panel-ui) 定制），配套后端见 [x-panel](https://github.com/howellxuKing/x-panel)。
+XWarp 的 Web 管理界面（基于 [Trojan Panel UI](https://github.com/trojanpanel/trojan-panel-ui) 定制），配套后端见 [x-panel](https://github.com/howellxuKing/x-panel)。
 
 功能：节点管理、用户/账号管理、流量与到期管理、订阅管理、系统设置、邮件到期提醒、伪装站配置。
 
 ## 与上游差异
 
-- 更名 X Panel（浏览器标题固定为 X Panel）
+- 更名 XWarp（浏览器标题固定为 XWarp）
 - 移除「项目地址 / 项目文档」外链入口
 - 使用自定义 logo
 

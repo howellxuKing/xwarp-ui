@@ -4,6 +4,7 @@ import ElementUI from 'element-ui'
 import '@/styles/element-variables.scss'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.scss'
+import '@/styles/theme.scss'
 import App from './App'
 import store from '@/store'
 import router from '@/router'
@@ -24,6 +25,9 @@ Vue.use(ElementUI, {
 })
 
 Vue.config.productionTip = false
+
+// 初始化主题（默认黑夜，选择保存在 localStorage）
+store.dispatch('theme/initTheme')
 
 new Vue({
   el: '#app',

@@ -1,8 +1,8 @@
 {
-  "name": "trojan-panel",
+  "name": "xwarp",
   "version": "1.0.0",
   "private": true,
-  "description": "X Panel UI",
+  "description": "XWarp UI",
   "author": "jonssonyan <https://jonssonyan.com>",
   "scripts": {
     "serve": "vue-cli-service serve",

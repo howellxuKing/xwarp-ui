@@ -24,10 +24,12 @@ export default {
     profile: '개인 센터',
     github: '프로젝트 주소',
     doc: '프로젝트 문서',
-    logout: '로그아웃'
+    logout: '로그아웃',
+    themeLight: '라이트 모드로 전환',
+    themeDark: '다크 모드로 전환'
   },
   login: {
-    title: 'X Panel',
+    title: 'XWarp',
     logIn: '로그인',
     username: '계정',
     password: '비밀번호',

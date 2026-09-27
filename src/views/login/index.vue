@@ -9,6 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
+        <img :src="logoSrc" class="login-logo" alt="XWarp" />
         <h3 class="title">
           {{ systemName }}
         </h3>
@@ -168,6 +169,14 @@ export default {
       captchaEnable: 0
     }
   },
+  computed: {
+    // 黑夜用反色（白 X），白天用原色（黑 X）
+    logoSrc() {
+      return this.$store.getters.theme === 'dark'
+        ? require('@/assets/logo-night.png')
+        : require('@/assets/logo-day.png')
+    }
+  },
   watch: {
     $route: {
       handler: function (route) {
@@ -320,6 +329,13 @@ $light_gray: #eee;
 
   .title-container {
     position: relative;
+
+    .login-logo {
+      display: block;
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 18px auto;
+    }
 
     .title {
       font-size: 26px;

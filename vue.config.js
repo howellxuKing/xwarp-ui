@@ -6,7 +6,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || 'X Panel'
+const name = defaultSettings.title || 'XWarp'
 const port = process.env.port || 8888
 module.exports = {
   publicPath: '/',

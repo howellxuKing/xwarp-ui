@@ -1,6 +1,6 @@
 import defaultSettings from '@/settings'
 
-const title = defaultSettings.title || 'X Panel'
+const title = defaultSettings.title || 'XWarp'
 
 // export default function getPageTitle(pageTitle) {
 //   if (pageTitle) {

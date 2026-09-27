@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'X Panel',
+  title: 'XWarp',
   showSettings: false,
   tagsView: true,
   fixedHeader: true,

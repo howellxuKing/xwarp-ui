@@ -9,6 +9,16 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
+      <el-tooltip
+        :content="theme === 'dark' ? $t('navbar.themeLight') : $t('navbar.themeDark')"
+        effect="dark"
+        placement="bottom"
+      >
+        <div class="right-menu-item hover-effect theme-toggle" @click="handleToggleTheme">
+          <i :class="theme === 'dark' ? 'el-icon-sunny' : 'el-icon-moon'" />
+        </div>
+      </el-tooltip>
+
       <template v-if="device !== 'mobile'">
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
@@ -24,7 +34,7 @@
       </template>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img src="/api/image/logo" class="user-avatar" />
+          <img :src="logoSrc" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -62,10 +72,19 @@ export default {
     LangSelect
   },
   computed: {
-    ...mapGetters(['sidebar', 'avatar', 'device'])
+    ...mapGetters(['sidebar', 'avatar', 'device', 'theme']),
+    // 黑夜用反色（白 X），白天用原色（黑 X）
+    logoSrc() {
+      return this.theme === 'dark'
+        ? require('@/assets/logo-night.png')
+        : require('@/assets/logo-day.png')
+    }
   },
   methods: {
     checkPermission,
+    handleToggleTheme() {
+      this.$store.dispatch('theme/toggleTheme')
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
@@ -82,7 +101,7 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
+  background: var(--surface, #fff);
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
@@ -94,7 +113,7 @@ export default {
     -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, 0.025);
+      background: var(--hover, rgba(0, 0, 0, 0.025));
     }
   }
 
@@ -121,7 +140,7 @@ export default {
       padding: 0 8px;
       height: 100%;
       font-size: 18px;
-      color: #5a5e66;
+      color: var(--text-regular, #5a5e66);
       vertical-align: text-bottom;
 
       &.hover-effect {
@@ -129,8 +148,17 @@ export default {
         transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, 0.025);
+          background: var(--hover, rgba(0, 0, 0, 0.025));
         }
+      }
+    }
+
+    .theme-toggle {
+      cursor: pointer;
+      transition: transform 0.25s ease;
+
+      &:hover {
+        transform: rotate(20deg);
       }
     }
 
@@ -146,6 +174,8 @@ export default {
           width: 40px;
           height: 40px;
           border-radius: 10px;
+          background: var(--surface-2, transparent);
+          padding: 4px;
         }
 
         .el-icon-caret-bottom {
