@@ -187,6 +187,8 @@ body {
 .el-table {
   background-color: transparent !important;
   color: var(--text) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 
   &::before,
   &::after {
@@ -195,7 +197,7 @@ body {
 
   th.el-table__cell,
   tr {
-    background-color: var(--surface) !important;
+    background-color: var(--surface-trans) !important;
   }
 
   th.el-table__cell {
@@ -212,11 +214,11 @@ body {
   }
 
   &.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
-    background-color: var(--surface-2) !important;
+    background-color: var(--surface-trans) !important;
   }
 
   .el-table__empty-block {
-    background-color: var(--surface) !important;
+    background-color: var(--surface-trans) !important;
 
     .el-table__empty-text {
       color: var(--text-muted) !important;
