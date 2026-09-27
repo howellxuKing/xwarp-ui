@@ -225,7 +225,7 @@ export default {
   }
 
   .chart-wrapper {
-    background: #fff;
+    background: var(--surface, #fff);
     padding: 16px 16px 0;
     margin-bottom: 32px;
   }

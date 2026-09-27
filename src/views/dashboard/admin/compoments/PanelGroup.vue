@@ -192,7 +192,7 @@ export default {
     position: relative;
     overflow: hidden;
     color: #666;
-    background: #fff;
+    background: var(--surface, #fff);
     box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.05);
 

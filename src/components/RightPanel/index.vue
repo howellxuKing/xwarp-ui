@@ -109,7 +109,7 @@ export default {
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.05);
   transition: all 0.25s cubic-bezier(0.7, 0.3, 0.1, 1);
   transform: translate(100%);
-  background: #fff;
+  background: var(--surface, #fff);
   z-index: 40000;
 }
 
