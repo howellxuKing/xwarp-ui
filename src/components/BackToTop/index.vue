@@ -108,7 +108,7 @@ export default {
 }
 
 .back-to-ceiling:hover {
-  background: #d5dbe7;
+  background: var(--surface-2, #d5dbe7);
 }
 
 .fade-enter-active,

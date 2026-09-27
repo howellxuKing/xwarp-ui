@@ -104,7 +104,7 @@ export default {
     font-size: 12px;
     position: relative;
     overflow: hidden;
-    color: #666;
+    color: var(--text-regular, #666);
     background: var(--surface, #fff);
     box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.05);
@@ -168,7 +168,7 @@ export default {
 
       .card-panel-text {
         line-height: 18px;
-        color: rgba(0, 0, 0, 0.45);
+        color: var(--text-muted, rgba(0, 0, 0, 0.45));
         font-size: 16px;
         margin-bottom: 12px;
       }
