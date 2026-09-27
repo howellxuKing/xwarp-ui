@@ -82,7 +82,7 @@ export default {
 <style lang="scss" scoped>
 .dashboard-editor-container {
   padding: 32px;
-  background-color: var(--bg, rgb(240, 242, 245));
+  background-color: transparent;
   position: relative;
 
   .github-corner {

@@ -28,6 +28,7 @@ body.theme-dark {
   --sidebar-sub-bg: #0a0a0a;
   --sidebar-hover: #16181c;
   --input-bg: #16181c;
+  --surface-trans: rgba(22, 24, 28, 0.55);
 }
 
 body.theme-light {
@@ -52,6 +53,7 @@ body.theme-light {
   --sidebar-sub-bg: #ececee;
   --sidebar-hover: #e4e4e7;
   --input-bg: #ffffff;
+  --surface-trans: rgba(255, 255, 255, 0.6);
 }
 
 /* ---------- 基础 ---------- */
@@ -63,7 +65,7 @@ body {
 
 #app,
 .app-wrapper {
-  background-color: var(--bg);
+  background-color: transparent;
 }
 
 /* ---------- 顶部栏 ---------- */
@@ -550,11 +552,11 @@ body .login-container {
   }
 }
 
-/* ---------- 品牌水印（页面背后的 X 图标）---------- */
+/* ---------- 品牌水印（页面背后的大 X 图标，全页面共享）---------- */
 body {
   background-repeat: no-repeat;
   background-position: center 42%;
-  background-size: 300px 300px;
+  background-size: 82vmin 82vmin;
   background-attachment: fixed;
 }
 
@@ -566,18 +568,11 @@ body.theme-light {
   background-image: url('../assets/watermark-day.png');
 }
 
-/* 有自己背景色的页面（仪表盘 / 节点详情）也要显示水印 */
-.dashboard-editor-container {
-  background-repeat: no-repeat;
-  background-position: center 42%;
-  background-size: 300px 300px;
-  background-attachment: fixed;
-}
-
-body.theme-dark .dashboard-editor-container {
-  background-image: url('../assets/watermark-night.png');
-}
-
-body.theme-light .dashboard-editor-container {
-  background-image: url('../assets/watermark-day.png');
+/* ---------- 卡片/面板半透明（毛玻璃），露出背后水印 ---------- */
+.el-card,
+.card-panel,
+.chart-wrapper {
+  background-color: var(--surface-trans) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
