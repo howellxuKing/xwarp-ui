@@ -43,6 +43,7 @@
           v-model="systemConfig.xrayTemplateEntity"
           v-bind="systemConfig.xrayTemplateEntity"
           mode="text"
+          :dark-theme="theme === 'dark'"
         />
       </el-form-item>
       <el-form-item>
@@ -55,6 +56,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { updateSystemById } from '@/api/system'
 import JsonEditorVue from 'json-editor-vue'
 import UploadLogo from '@/components/UploadLogo'
@@ -62,6 +64,9 @@ import UploadLogo from '@/components/UploadLogo'
 export default {
   name: 'templateConfig',
   components: { JsonEditorVue, UploadLogo },
+  computed: {
+    ...mapGetters(['theme'])
+  },
   props: {
     systemConfig: {
       type: Object,
