@@ -40,4 +40,4 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/howellxuking/x-panel-ui:latest
+          tags: ghcr.io/howellxuking/xwarp-ui:latest
