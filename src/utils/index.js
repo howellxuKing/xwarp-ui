@@ -231,25 +231,28 @@ export function toggleClass(element, className) {
   element.className = classString
 }
 
-export function timeStampToDate(timestamp) {
+export function timeStampToDate(timestamp, withTime = false) {
   const date = new Date(timestamp)
   const yy = date.getFullYear() // 年
   const mm = date.getMonth() + 1 // 月
   const dd = date.getDate() // 日
-  const hh = date.getHours() // 时
-  const ii = date.getMinutes() // 分
-  const ss = date.getSeconds() // 秒
   let clock = yy + '-'
   if (mm < 10) clock += '0'
   clock += mm + '-'
   if (dd < 10) clock += '0'
-  clock += dd + ' '
-  if (hh < 10) clock += '0'
-  clock += hh + ':'
-  if (ii < 10) clock += '0'
-  clock += ii + ':'
-  if (ss < 10) clock += '0'
-  clock += ss
+  clock += dd
+  if (withTime) {
+    const hh = date.getHours() // 时
+    const ii = date.getMinutes() // 分
+    const ss = date.getSeconds() // 秒
+    clock += ' '
+    if (hh < 10) clock += '0'
+    clock += hh + ':'
+    if (ii < 10) clock += '0'
+    clock += ii + ':'
+    if (ss < 10) clock += '0'
+    clock += ss
+  }
   return clock
 }
 

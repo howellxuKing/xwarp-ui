@@ -266,10 +266,16 @@ export default {
         color: var(--text-muted, rgba(0, 0, 0, 0.45));
         font-size: 16px;
         margin-bottom: 12px;
+        white-space: nowrap;
       }
 
       .card-panel-num {
         font-size: 20px;
+      }
+
+      h3 {
+        white-space: nowrap;
+        margin: 0;
       }
     }
   }
