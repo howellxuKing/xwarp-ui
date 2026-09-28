@@ -118,7 +118,7 @@ body {
 }
 
 /* ---------- 侧边栏菜单 ---------- */
-.sidebar-container {
+#app .sidebar-container {
   background-color: var(--sidebar-bg) !important;
 
   .el-menu {
@@ -160,6 +160,22 @@ body {
 
     &:hover {
       background-color: var(--sidebar-hover) !important;
+      color: var(--sidebar-active-text) !important;
+
+      i {
+        color: var(--sidebar-active-text) !important;
+      }
+    }
+  }
+}
+
+/* 折叠态弹出菜单的悬停 */
+.el-menu--vertical {
+  .nest-menu .el-submenu > .el-submenu__title,
+  .el-menu-item {
+    &:hover {
+      background-color: var(--sidebar-hover) !important;
+      color: var(--sidebar-active-text) !important;
     }
   }
 }
