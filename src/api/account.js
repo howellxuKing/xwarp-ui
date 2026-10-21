@@ -227,6 +227,7 @@ export function createAccountBatch(data) {
   return request({
     url: '/account/createAccountBatch',
     method: 'post',
+    timeout: 180000,
     data
   })
 }

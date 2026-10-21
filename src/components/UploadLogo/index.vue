@@ -34,7 +34,7 @@ export default {
   name: 'index',
   data() {
     return {
-      fileList: [{ name: 'logo.png', url: '/api/image/logo' }],
+      fileList: [{ name: 'logo.png', url: (window.__XWARP_BASE__ || '/') + 'api/image/logo' }],
       uploadDisable: true
     }
   },

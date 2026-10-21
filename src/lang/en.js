@@ -29,6 +29,8 @@ export default {
     themeDark: 'Switch to dark mode'
   },
   login: {
+    sessionExpired: 'Your login has expired. Please sign in again. Node services are unaffected.',
+    sessionInvalid: 'Your session is no longer valid. Please sign in again. Signing in elsewhere, changing your password or clearing sessions can cause this.',
     title: 'XWarp',
     logIn: 'Login',
     username: 'Username',

@@ -1,3 +1,4 @@
+import './runtime-path'
 import Vue from 'vue'
 import 'normalize.css/normalize.css'
 import ElementUI from 'element-ui'

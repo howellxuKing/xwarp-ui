@@ -9,7 +9,7 @@ function resolve(dir) {
 const name = defaultSettings.title || 'XWarp'
 const port = process.env.port || 8888
 module.exports = {
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: false,

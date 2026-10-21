@@ -36,6 +36,11 @@ router.beforeEach(async (to, from, next) => {
           }
           next({ ...to, replace: true })
         } catch (error) {
+          if (error.sessionExpired) {
+            next(false)
+            NProgress.done()
+            return
+          }
           await store.dispatch('account/resetToken')
           Message.error(error || 'Has Error')
           next(`/login?redirect=${to.path}`)

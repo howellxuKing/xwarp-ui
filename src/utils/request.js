@@ -1,11 +1,20 @@
 import axios from 'axios'
-import { Message, MessageBox } from 'element-ui'
+import { Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-import i18n from '@/lang'
+import { sessionReason, createSessionExpiryHandler } from './session-expiry'
+
+const expireSession = createSessionExpiryHandler(
+  () => store.dispatch('account/resetToken'),
+  // Let an in-flight route guard finish cancelling its navigation first.
+  (reason) => setTimeout(() => {
+    window.location.replace((window.__XWARP_BASE__ || '/') + '#/login?session=' + reason)
+  }, 0)
+)
+let expiringSession = false
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: (window.__XWARP_BASE__ || '/') + 'api',
   timeout: 5000
 })
 
@@ -30,23 +39,20 @@ service.interceptors.response.use(
     } else if (res instanceof Blob) {
       return response
     } else {
+      const reason = sessionReason(res.code)
+      if (reason && (getToken() || expiringSession)) {
+        expiringSession = true
+        const error = new Error(res.message || 'Session expired')
+        error.sessionExpired = true
+        expireSession(reason)
+        return Promise.reject(error)
+      }
       Message({
         message: res.message || 'Error',
         type: 'error',
         duration: 5 * 1000
       })
 
-      if (res.code === 50014 || res.code === 50008 || res.code === 50401) {
-        MessageBox.confirm(i18n.t('confirm.logoutPrompt'), 'Confirm logout', {
-          confirmButtonText: i18n.t('confirm.logoutConfirm'),
-          cancelButtonText: i18n.t('confirm.cancel'),
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('account/resetToken').then(() => {
-            location.reload()
-          })
-        })
-      }
       return Promise.reject(new Error(res.message || 'Error'))
     }
   },

@@ -29,6 +29,8 @@ export default {
     themeDark: '切到黑夜模式'
   },
   login: {
+    sessionExpired: '登录已过期，请重新登录。节点服务不会因此停止。',
+    sessionInvalid: '登录状态已失效，请重新登录。账号在其他浏览器重新登录、密码更改或会话被清理时，会出现这种情况。',
     title: 'XWarp',
     logIn: '登录',
     username: '账号',

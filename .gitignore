@@ -13,3 +13,6 @@ tests/**/coverage/
 *.ntvs*
 *.njsproj
 *.sln
+
+__pycache__/
+*.pyc

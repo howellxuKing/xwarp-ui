@@ -29,6 +29,8 @@ export default {
     themeDark: '다크 모드로 전환'
   },
   login: {
+    sessionExpired: '로그인이 만료되었습니다. 다시 로그인해 주세요. 노드 서비스는 계속 실행됩니다.',
+    sessionInvalid: '로그인 세션이 유효하지 않습니다. 다른 브라우저에서 로그인하거나 비밀번호를 변경하거나 세션이 삭제된 경우 다시 로그인해야 합니다.',
     title: 'XWarp',
     logIn: '로그인',
     username: '계정',

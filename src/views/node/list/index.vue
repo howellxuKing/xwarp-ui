@@ -671,10 +671,7 @@ export default {
       clashSubscribe().then((response) => {
         if (
           copy(
-            window.location.protocol +
-              '//' +
-              window.location.host +
-              response.data
+            new URL(response.data, window.location.origin).href
           )
         ) {
           Message({

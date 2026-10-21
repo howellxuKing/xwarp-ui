@@ -30,6 +30,7 @@
           clearable
         />
       </el-form-item>
+      <el-form-item label="动态验证码 / 恢复码"><el-input v-model="temp.otp" autocomplete="one-time-code" maxlength="32" /></el-form-item>
       <el-form-item>
         <el-button type="primary" @click="updateData()"
           >{{ $t('table.confirm') }}
@@ -59,7 +60,7 @@ export default {
         email: undefined,
         oldPass: '',
         newPassOne: '',
-        newPass: ''
+        newPass: '', otp: ''
       },
       emailEnable: 0,
       updateRules: {
@@ -85,13 +86,13 @@ export default {
           },
           {
             min: 6,
-            max: 20,
-            message: this.$t('valid.passRange'),
+            max: 72,
+            message: '密码长度为6至72字节',
             trigger: ['change', 'blur']
           },
           {
-            pattern: /^[A-Za-z0-9]+$/,
-            message: this.$t('valid.passElement'),
+            validator: (rule, value, done) => new TextEncoder().encode(value || '').length <= 72 ? done() : done(new Error('密码最多72字节')),
+            message: '密码最多72字节',
             trigger: ['change', 'blur']
           }
         ],
@@ -102,14 +103,14 @@ export default {
             trigger: ['change', 'blur']
           },
           {
-            min: 6,
-            max: 20,
-            message: this.$t('valid.passRange'),
+            min: 16,
+            max: 72,
+            message: '密码长度为6至72字节',
             trigger: ['change', 'blur']
           },
           {
-            pattern: /^[A-Za-z0-9]+$/,
-            message: this.$t('valid.passElement'),
+            validator: (rule, value, done) => new TextEncoder().encode(value || '').length <= 72 ? done() : done(new Error('密码最多72字节')),
+            message: '密码最多72字节',
             trigger: ['change', 'blur']
           },
           {
@@ -130,7 +131,7 @@ export default {
         email: undefined,
         oldPass: '',
         newPassOne: '',
-        newPass: ''
+        newPass: '', otp: ''
       }
     },
     setting() {
@@ -144,6 +145,7 @@ export default {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
           updateAccountPass(tempData).then(() => {
+            this.$store.dispatch('account/resetToken').then(() => { location.reload() })
             this.resetTemp()
             this.$nextTick(() => {
               this.$refs['dataForm'].clearValidate()

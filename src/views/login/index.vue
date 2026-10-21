@@ -16,6 +16,7 @@
         <lang-select class="set-language" />
       </div>
 
+      <el-alert v-if="sessionNotice" :title="sessionNotice" type="warning" show-icon :closable="false" style="margin-bottom: 20px" />
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="username" />
@@ -55,6 +56,7 @@
         </span>
       </el-form-item>
 
+      <el-form-item><el-input v-model="loginForm.otp" placeholder="动态验证码或恢复码（开启两步验证时填写）" autocomplete="one-time-code" maxlength="32" @keyup.enter.native="handleLogin" /></el-form-item>
       <!-- 验证码 -->
       <el-form-item prop="captchaCode" v-if="captchaEnable">
         <span class="svg-container">
@@ -112,6 +114,7 @@ export default {
       loginForm: {
         username: '',
         pass: '',
+        otp: '',
         captchaId: '',
         captchaCode: ''
       },
@@ -143,13 +146,13 @@ export default {
           },
           {
             min: 6,
-            max: 20,
-            message: this.$t('valid.passRange'),
+            max: 72,
+            message: '密码长度为6至72字节',
             trigger: ['change', 'blur']
           },
           {
-            pattern: /^[A-Za-z0-9]+$/,
-            message: this.$t('valid.passElement'),
+            validator: (rule, value, done) => new TextEncoder().encode(value || '').length <= 72 ? done() : done(new Error('密码最多72字节')),
+            message: '密码最多72字节',
             trigger: ['change', 'blur']
           }
         ],
@@ -170,6 +173,12 @@ export default {
     }
   },
   computed: {
+    sessionNotice() {
+      const reason = this.$route.query.session
+      if (reason === 'expired') return this.$t('login.sessionExpired')
+      if (reason === 'invalid') return this.$t('login.sessionInvalid')
+      return ''
+    },
     // 黑夜用反色（白 X），白天用原色（黑 X）
     logoSrc() {
       return this.$store.getters.theme === 'dark'

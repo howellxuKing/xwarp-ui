@@ -31,11 +31,12 @@ const mutations = {
 const actions = {
   // account login
   login({ commit }, accountInfo) {
-    const { username, pass, captchaId, captchaCode } = accountInfo
+    const { username, pass, otp, captchaId, captchaCode } = accountInfo
     return new Promise((resolve, reject) => {
       login({
         username: username.trim(),
         pass: pass,
+        otp: otp || '',
         captchaId: captchaId,
         captchaCode: captchaCode
       })
@@ -113,6 +114,7 @@ const actions = {
   resetToken({ commit }) {
     return new Promise((resolve) => {
       removeToken()
+      resetRouter()
       commit('RESET_STATE')
       resolve()
     })

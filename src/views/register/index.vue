@@ -166,14 +166,14 @@ export default {
             trigger: ['change', 'blur']
           },
           {
-            min: 6,
-            max: 20,
-            message: this.$t('valid.passRange'),
+            min: 16,
+            max: 72,
+            message: '新密码长度为16至72字节',
             trigger: ['change', 'blur']
           },
           {
-            pattern: /^[A-Za-z0-9]+$/,
-            message: this.$t('valid.passElement'),
+            validator: (rule, value, done) => new TextEncoder().encode(value || '').length <= 72 ? done() : done(new Error('密码最多72字节')),
+            message: '密码最多72字节',
             trigger: ['change', 'blur']
           },
           {

@@ -31,6 +31,7 @@
           clearable
         />
       </el-form-item>
+      <el-form-item label="动态验证码 / 恢复码"><el-input v-model="temp.otp" autocomplete="one-time-code" maxlength="32" /></el-form-item>
       <el-form-item>
         <el-button type="primary" @click="updateData()"
           >{{ $t('table.confirm') }}
@@ -58,7 +59,7 @@ export default {
       temp: {
         email: undefined,
         username: undefined,
-        pass: ''
+        pass: '', otp: ''
       },
       emailEnable: 0,
       updateRules: {
@@ -105,13 +106,13 @@ export default {
           },
           {
             min: 6,
-            max: 20,
-            message: this.$t('valid.passRange'),
+            max: 72,
+            message: '密码长度为6至72字节',
             trigger: ['change', 'blur']
           },
           {
-            pattern: /^[A-Za-z0-9]+$/,
-            message: this.$t('valid.passElement'),
+            validator: (rule, value, done) => new TextEncoder().encode(value || '').length <= 72 ? done() : done(new Error('密码最多72字节')),
+            message: '密码最多72字节',
             trigger: ['change', 'blur']
           },
           {
@@ -130,7 +131,7 @@ export default {
       this.temp = {
         email: undefined,
         username: undefined,
-        pass: ''
+        pass: '', otp: ''
       }
     },
     setting() {

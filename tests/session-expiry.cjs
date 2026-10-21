@@ -1,0 +1,17 @@
+const assert = require('node:assert/strict')
+const fs = require('node:fs')
+const vm = require('node:vm')
+const context = vm.createContext({ Promise })
+vm.runInContext(fs.readFileSync('src/utils/session-expiry.js', 'utf8').replace(/export /g, ''), context)
+assert.equal(context.sessionReason(50014), 'expired')
+assert.equal(context.sessionReason(50008), 'invalid')
+assert.equal(context.sessionReason(50401), 'invalid')
+assert.equal(context.sessionReason(50403), null)
+assert.equal(context.sessionReason(50000), null)
+;(async () => {
+  const calls = []
+  const handler = context.createSessionExpiryHandler(async () => calls.push('reset'), (reason) => calls.push(reason))
+  await Promise.all([handler('expired'), handler('invalid'), handler('invalid')])
+  assert.deepEqual(calls, ['reset', 'expired'])
+  console.log('Session expiry: parallel failures handled once; permission and server errors preserve login')
+})().catch((error) => { console.error(error); process.exitCode = 1 })
