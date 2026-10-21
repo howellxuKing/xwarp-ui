@@ -39,6 +39,16 @@ export default {
     code: '验证码'
   },
   register: {
+    generatedPasswordHint: "只需填写用户名，系统会自动生成登录密码。",
+    resultTitle: "注册成功，请保存账号密码",
+    saveCredentialsHint: "密码仅在本次注册成功后显示。请立即复制保存，关闭或刷新页面后无法再次查看。",
+    passwordManagedByAdmin: "登录密码只能由管理员修改；忘记密码请联系管理员重置。",
+    copyCredentials: "复制账号和密码",
+    credentialsSaved: "我已保存账号和密码",
+    goToLogin: "已保存，前往登录",
+    credentialsCopied: "账号和密码已复制，请妥善保存。",
+    copyFailed: "复制失败，请手动选中账号和密码保存。",
+    credentialsUnavailable: "未能读取初始密码，请联系管理员重置密码。",
     title: '用户注册',
     username: '账号',
     passOne: '密码',

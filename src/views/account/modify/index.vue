@@ -1,7 +1,8 @@
 <template>
   <div class="app-container">
+    <el-alert v-if="!canManagePasswords" :title="$t('register.passwordManagedByAdmin')" type="info" :closable="false" />
     <el-tabs v-model="activeName">
-      <el-tab-pane :label="$t('config.modifyPass')" name="modify-pass">
+      <el-tab-pane v-if="canManagePasswords" :label="$t('config.modifyPass')" name="modify-pass">
         <ModifyPass />
       </el-tab-pane>
       <el-tab-pane :label="$t('config.modifyProperty')" name="modify-property">
@@ -22,7 +23,12 @@ export default {
   components: { ModifyProperty, ModifyPass, SecuritySettings },
   data() {
     return {
-      activeName: 'modify-pass'
+      activeName: this.$store.getters.roles.includes('admin') ? 'modify-pass' : 'modify-property'
+    }
+  },
+  computed: {
+    canManagePasswords() {
+      return this.$store.getters.roles.includes('admin')
     }
   }
 }

@@ -39,6 +39,16 @@ export default {
     code: '확인 코드'
   },
   register: {
+    generatedPasswordHint: "사용자 이름만 입력하면 로그인 비밀번호가 자동으로 생성됩니다.",
+    resultTitle: "가입 완료. 로그인 정보를 저장하세요.",
+    saveCredentialsHint: "비밀번호는 가입 직후 한 번만 표시됩니다. 페이지를 닫거나 새로 고치기 전에 복사하여 저장하세요.",
+    passwordManagedByAdmin: "비밀번호는 관리자만 변경할 수 있습니다. 잊어버렸다면 관리자에게 재설정을 요청하세요.",
+    copyCredentials: "계정과 비밀번호 복사",
+    credentialsSaved: "계정과 비밀번호를 저장했습니다",
+    goToLogin: "저장 완료, 로그인하기",
+    credentialsCopied: "로그인 정보를 복사했습니다. 안전하게 저장하세요.",
+    copyFailed: "복사하지 못했습니다. 계정과 비밀번호를 직접 선택하여 저장하세요.",
+    credentialsUnavailable: "초기 비밀번호를 읽지 못했습니다. 관리자에게 재설정을 요청하세요.",
     title: '사용자 등록',
     username: '계정',
     passOne: '비밀번호',

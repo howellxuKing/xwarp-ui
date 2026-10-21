@@ -1,124 +1,94 @@
 <template>
   <div class="login-container">
     <el-form
+      v-if="!credentials"
       ref="registerForm"
       :model="registerForm"
       :rules="registerRules"
       class="login-form"
-      auto-complete="on"
       label-position="left"
+      @submit.native.prevent="handleRegister"
     >
       <div class="title-container">
         <h3 class="title">{{ $t('register.title') }}</h3>
       </div>
-
+      <p class="registration-hint">{{ $t('register.generatedPasswordHint') }}</p>
       <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="username" />
-        </span>
+        <span class="svg-container"><svg-icon icon-class="username" /></span>
         <el-input
           ref="username"
           v-model="registerForm.username"
           :placeholder="$t('register.username')"
+          :aria-label="$t('register.username')"
           name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
+          autocomplete="username"
+          maxlength="20"
           clearable
+          @keyup.enter.native.prevent="handleRegister"
         />
       </el-form-item>
-
-      <el-form-item prop="pass">
-        <span class="svg-container">
-          <svg-icon icon-class="pass" />
-        </span>
-        <el-input
-          ref="pass"
-          v-model="registerForm.passOne"
-          :type="passwordType"
-          :placeholder="$t('register.passOne')"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          clearable
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon
-            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-          />
-        </span>
-      </el-form-item>
-
-      <el-form-item prop="pass">
-        <span class="svg-container">
-          <svg-icon icon-class="pass" />
-        </span>
-        <el-input
-          ref="pass"
-          v-model="registerForm.pass"
-          :type="passwordType"
-          :placeholder="$t('register.pass')"
-          name="password"
-          tabindex="3"
-          auto-complete="on"
-          clearable
-          @keyup.enter.native="handleRegister"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon
-            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-          />
-        </span>
-      </el-form-item>
-
-      <!-- 验证码 -->
-      <el-form-item prop="captchaCode" v-if="captchaEnable">
-        <span class="svg-container">
-          <svg-icon icon-class="valid-code" />
-        </span>
+      <el-form-item v-if="captchaEnable" prop="captchaCode">
+        <span class="svg-container"><svg-icon icon-class="valid-code" /></span>
         <el-input
           v-model="registerForm.captchaCode"
-          auto-complete="off"
+          autocomplete="off"
           :placeholder="$t('login.code')"
+          :aria-label="$t('login.code')"
           style="width: 65%"
-          @keyup.enter="handleRegister"
+          @keyup.enter.native.prevent="handleRegister"
         />
-
         <div class="captcha">
-          <img :src="captchaImg" @click="handleCaptchaGenerate" height="38px" />
+          <img :src="captchaImg" :alt="$t('login.code')" @click="handleCaptchaGenerate" height="38px" />
         </div>
       </el-form-item>
-
       <el-button
         :loading="loading"
+        :disabled="!settingsLoaded"
         type="primary"
-        style="width: 100%; margin-bottom: 30px"
-        @click.native.prevent="handleRegister"
-        >{{ $t('register.register') }}
-      </el-button>
-      <el-button type="primary" style="width: 100%; margin: 0">
-        <router-link to="/login" custom v-slot="{ navigate }">
-          <span @click="navigate" role="link">{{ $t('register.login') }}</span>
-        </router-link>
+        class="registration-action"
+        @click="handleRegister"
+      >{{ $t('register.register') }}</el-button>
+      <el-button class="registration-action" @click="$router.push('/login')">
+        {{ $t('register.login') }}
       </el-button>
     </el-form>
+
+    <section v-else class="login-form registration-result" aria-labelledby="registration-result-title">
+      <div class="title-container">
+        <h3 id="registration-result-title" class="title">{{ $t('register.resultTitle') }}</h3>
+      </div>
+      <p class="registration-hint" role="status">{{ $t('register.saveCredentialsHint') }}</p>
+      <dl class="registration-credentials">
+        <dt>{{ $t('register.username') }}</dt>
+        <dd><code>{{ credentials.username }}</code></dd>
+        <dt>{{ $t('register.pass') }}</dt>
+        <dd><code>{{ credentials.initialPassword }}</code></dd>
+      </dl>
+      <el-button class="registration-action" @click="copyCredentials">
+        {{ $t('register.copyCredentials') }}
+      </el-button>
+      <p class="registration-hint">{{ $t('register.passwordManagedByAdmin') }}</p>
+      <el-checkbox v-model="credentialsSaved" class="registration-confirm">
+        {{ $t('register.credentialsSaved') }}
+      </el-checkbox>
+      <el-button
+        type="primary"
+        :disabled="!credentialsSaved"
+        class="registration-action"
+        @click="goToLogin"
+      >{{ $t('register.goToLogin') }}</el-button>
+    </section>
   </div>
 </template>
 
 <script>
+import copy from 'copy-to-clipboard'
 import { generateCaptcha } from '@/api/account'
 import { setting } from '@/api/system'
 
 export default {
-  name: 'index',
+  name: 'Register',
   data() {
-    const validatePass = (rule, value, callback) => {
-      if (this.registerForm.passOne !== this.registerForm.pass) {
-        callback(new Error(this.$t('valid.passNotSame')))
-      } else {
-        callback()
-      }
-    }
     const validateUsername = (rule, value, callback) => {
       if (this.registerForm.username.trim().indexOf('admin') >= 0) {
         callback(new Error(this.$t('valid.usernameNotExistAdmin')))
@@ -127,118 +97,76 @@ export default {
       }
     }
     return {
-      registerForm: {
-        username: '',
-        passOne: '',
-        pass: '',
-        captchaId: '',
-        captchaCode: ''
-      },
+      registerForm: { username: '', captchaId: '', captchaCode: '' },
+      credentials: null,
+      credentialsSaved: false,
+      settingsLoaded: false,
       captchaImg: '',
       captchaEnable: 0,
       registerRules: {
         username: [
-          {
-            required: true,
-            message: this.$t('valid.username'),
-            trigger: ['change', 'blur']
-          },
-          {
-            min: 6,
-            max: 20,
-            message: this.$t('valid.usernameRange'),
-            trigger: ['change', 'blur']
-          },
-          {
-            pattern: /^[A-Za-z0-9]+$/,
-            message: this.$t('valid.usernameElement'),
-            trigger: ['change', 'blur']
-          },
-          {
-            validator: validateUsername,
-            trigger: ['change', 'blur']
-          }
-        ],
-        pass: [
-          {
-            required: true,
-            message: this.$t('valid.pass'),
-            trigger: ['change', 'blur']
-          },
-          {
-            min: 16,
-            max: 72,
-            message: '新密码长度为16至72字节',
-            trigger: ['change', 'blur']
-          },
-          {
-            validator: (rule, value, done) => new TextEncoder().encode(value || '').length <= 72 ? done() : done(new Error('密码最多72字节')),
-            message: '密码最多72字节',
-            trigger: ['change', 'blur']
-          },
-          {
-            validator: validatePass,
-            trigger: ['change', 'blur']
-          }
+          { required: true, message: this.$t('valid.username'), trigger: ['change', 'blur'] },
+          { min: 6, max: 20, message: this.$t('valid.usernameRange'), trigger: ['change', 'blur'] },
+          { pattern: /^[A-Za-z0-9]+$/, message: this.$t('valid.usernameElement'), trigger: ['change', 'blur'] },
+          { validator: validateUsername, trigger: ['change', 'blur'] }
         ],
         captchaCode: [
-          {
-            required: true,
-            message: this.$t('valid.code'),
-            trigger: ['change', 'blur']
-          }
+          { required: true, message: this.$t('valid.code'), trigger: ['change', 'blur'] }
         ]
       },
-      loading: false,
-      passwordType: 'password'
+      loading: false
     }
   },
   created() {
-    this.handleCaptchaGenerate()
-    this.setting()
+    setting().then(({ data }) => {
+      this.captchaEnable = data.captchaEnable
+      this.settingsLoaded = true
+      if (this.captchaEnable) this.handleCaptchaGenerate()
+    })
+  },
+  beforeDestroy() {
+    this.credentials = null
   },
   methods: {
     handleCaptchaGenerate() {
-      generateCaptcha().then((response) => {
-        this.registerForm.captchaId = response.data.captchaId
-        this.captchaImg = response.data.captchaImg
-      })
-    },
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-      this.$nextTick(() => {
-        this.$refs.pass.focus()
+      return generateCaptcha().then(({ data }) => {
+        this.registerForm.captchaId = data.captchaId
+        this.captchaImg = data.captchaImg
       })
     },
     handleRegister() {
+      if (this.loading || this.credentials || !this.settingsLoaded) return
       this.$refs.registerForm.validate((valid) => {
-        if (valid) {
-          this.loading = true
-          this.$store
-            .dispatch('account/register', this.registerForm)
-            .then(() => {
-              this.$router.push({ path: '/login' })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-              this.handleCaptchaGenerate()
-            })
-        } else {
-          // console.log('error submit!!')
-          return false
-        }
+        if (!valid) return
+        this.loading = true
+        this.$store.dispatch('account/register', this.registerForm)
+          .then((data) => {
+            if (!data || !data.username || !data.initialPassword) {
+              this.$message.error(this.$t('register.credentialsUnavailable'))
+              return
+            }
+            this.credentials = { username: data.username, initialPassword: data.initialPassword }
+            this.credentialsSaved = false
+          })
+          .catch(() => {
+            if (this.captchaEnable) this.handleCaptchaGenerate()
+          })
+          .finally(() => { this.loading = false })
       })
     },
-    setting() {
-      setting().then((response) => {
-        const { data } = response
-        this.captchaEnable = data.captchaEnable
-      })
+    copyCredentials() {
+      const text = this.$t('register.username') + ': ' + this.credentials.username + '\n' +
+        this.$t('register.pass') + ': ' + this.credentials.initialPassword
+      if (copy(text)) {
+        this.$message.success(this.$t('register.credentialsCopied'))
+      } else {
+        this.$message.error(this.$t('register.copyFailed'))
+      }
+    },
+    goToLogin() {
+      if (!this.credentialsSaved) return
+      this.credentials = null
+      this.$router.push('/login')
     }
   }
 }
@@ -363,6 +291,56 @@ $light_gray: #eee;
       cursor: pointer;
       vertical-align: middle;
     }
+  }
+}
+</style>
+
+
+<style lang="scss" scoped>
+.registration-hint {
+  margin: 0 0 24px;
+  color: var(--text-regular, #d6d9db);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.registration-action {
+  display: block;
+  width: 100%;
+  margin: 0 0 20px !important;
+}
+.registration-credentials {
+  margin: 28px 0;
+  padding: 24px 0;
+  border-top: 1px solid var(--border, #2f3336);
+  border-bottom: 1px solid var(--border, #2f3336);
+  dt {
+    margin-bottom: 8px;
+    color: var(--text-regular, #d6d9db);
+    font-size: 14px;
+  }
+  dd {
+    margin: 0 0 24px;
+    color: var(--text, #e7e9ea);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    user-select: text;
+    &:last-child { margin-bottom: 0; }
+  }
+}
+.registration-confirm {
+  display: block;
+  margin: 0 0 24px;
+  ::v-deep .el-checkbox__label {
+    white-space: normal;
+    line-height: 1.6;
+    vertical-align: top;
+  }
+}
+@media (max-width: 600px) {
+  .login-container .login-form {
+    padding: 64px 24px 32px;
   }
 }
 </style>

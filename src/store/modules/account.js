@@ -54,16 +54,15 @@ const actions = {
 
   // account register
   register({ commit }, accountInfo) {
-    const { username, pass, captchaId, captchaCode } = accountInfo
+    const { username, captchaId, captchaCode } = accountInfo
     return new Promise((resolve, reject) => {
       register({
         username: username.trim(),
-        pass: pass.trim(),
         captchaId: captchaId,
         captchaCode: captchaCode
       })
         .then((response) => {
-          resolve()
+          resolve(response.data)
         })
         .catch((error) => {
           reject(error)

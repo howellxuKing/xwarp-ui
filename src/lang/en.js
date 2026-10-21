@@ -39,6 +39,16 @@ export default {
     code: 'verification code'
   },
   register: {
+    generatedPasswordHint: "Enter a username. A login password will be generated for you.",
+    resultTitle: "Account created. Save your login details.",
+    saveCredentialsHint: "Your password is shown only after this registration. Copy and save it before closing or refreshing this page.",
+    passwordManagedByAdmin: "Only an administrator can change your password. Contact an administrator if you forget it.",
+    copyCredentials: "Copy username and password",
+    credentialsSaved: "I have saved my username and password",
+    goToLogin: "Saved, go to login",
+    credentialsCopied: "Login details copied. Store them safely.",
+    copyFailed: "Could not copy. Select and save the username and password manually.",
+    credentialsUnavailable: "Could not read the initial password. Contact an administrator to reset it.",
     title: 'User Registration',
     username: 'Username',
     passOne: 'Password',
