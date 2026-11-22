@@ -48,7 +48,10 @@ export function selectNodePage(data) {
   return request({
     url: '/node/selectNodePage',
     method: 'get',
-    params: data
+    params: data,
+    // The list waits for parallel core status calls. Each call is limited to
+    // about 4 seconds, so the default 5 second client timeout is too close.
+    timeout: 15000
   })
 }
 
